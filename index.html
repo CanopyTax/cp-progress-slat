@@ -1,0 +1,30 @@
+<html>
+<head>
+	<script src="./webcomponents.min.js"></script>
+	<link rel="import" href="./cp-progress-slat.html">
+	<link rel="stylesheet" href="//app-local.canopy.dev/fonts/font-awesome-4.3.0/css/font-awesome.min.css" type="text/css" />
+	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,300,400,600" type="text/css" />
+	<link rel="stylesheet" href="//styleguide.corp.canopytax.com/styleguide.css" type="text/css" />
+	<title>Demo: cp-progress-slat</title>
+</head>
+
+<body>
+
+<div style="padding: 20px;">
+	<div style="width: 800px;">
+		<cp-progress-slat id="progressSlat1" progress-label="Progress Slat 1" progress-percent="80"></cp-progress-slat>
+		<cp-progress-slat id="progressSlat2" progress-label="Progress Slat 2" progress-percent="20"></cp-progress-slat>
+	</div>
+	<p>
+		<label for="slat1label">Change Slat One</label>
+		<input id="slat1label" type="range" min="0" max="100" value="80" onchange="JavaScript: document.getElementById('progressSlat1').setAttribute('progress-percent', this.value);">
+	</p>
+
+	<p>
+		<label for="slat2label">Change Slat Two</label>
+		<input id="slat2label" type="range" min="0" max="100" value="20" onchange="JavaScript: document.getElementById('progressSlat2').setAttribute('progress-percent', this.value);">
+	</p>
+</div>
+
+</body>
+</html>

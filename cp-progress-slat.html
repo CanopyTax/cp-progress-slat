@@ -1,0 +1,88 @@
+<template id="cpProgressSlat">
+
+	<style>
+		@import url("//app-local.canopy.dev/fonts/font-awesome-4.3.0/css/font-awesome.min.css");
+		@import url("//fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,300,400,600");
+		@import url("//styleguide.corp.canopytax.com/styleguide.css");
+
+		.com-progress-bar {
+			position: absolute;
+			top: 0;
+			left: 0;
+			height: 100%;
+			width: 0;
+			transition: 300ms cubic-bezier(.65,0,.35,1) width;
+		}
+
+	</style>
+
+	<div class="cps-slat +noclick" id="progressSlat">
+		<div class="com-progress-bar" id="progressBar"></div>
+		<div class="cps-slat__content">
+			<div class="cps-slat__content__title" id="progressLabel"></div>
+		</div>
+		<div class="cps-slat__actions" id="progressAmount">0%$</div>
+	</div>
+
+</template>
+
+<script>
+
+	(function () {
+		var progressSlatDoc = (document._currentScript || document.currentScript).ownerDocument;
+		var objectPrototype = Object.create(HTMLElement.prototype);
+
+		Object.defineProperty(objectPrototype, 'progress-label', {
+			writable: true
+		});
+
+		Object.defineProperty(objectPrototype, 'progress-percent', {
+			writable: true,
+			value: 0
+		});
+
+		Object.defineProperty(objectPrototype, 'progress-bar-color', {
+			writable: true
+		});
+
+		Object.defineProperty(objectPrototype, 'progress-amount-color', {
+			writable: true
+		});
+
+		objectPrototype.createdCallback = function() {
+			var shadow = this.createShadowRoot();
+			var template = progressSlatDoc.querySelector('#cpProgressSlat');
+
+			shadow.appendChild(template.content.cloneNode(true));
+
+			this.progressBar = shadow.querySelector('#progressBar');
+			this.progressLabel = shadow.querySelector('#progressLabel');
+			this.progressAmount = shadow.querySelector('#progressAmount');
+
+			this.progressBar.style.backgroundColor = (this.getAttribute('progress-bar-color') || "#EDF7ED");
+			this.progressLabel.textContent = this.getAttribute('progress-label') || "Progress";
+			this.progressAmount.textContent = this.getAttribute('progress-percent') + '%' || "0%";
+			this.progressAmount.style.color = this.getAttribute('progress-amount-color') || '#4CAF50';
+
+			this.setProgress(this.getAttribute('progress-percent') || 0);
+		};
+
+		objectPrototype.attributeChangedCallback = function(attributeName, oldVal, newValue) {
+			if (attributeName == "progress-percent") {
+				this.setProgress(newValue);
+			}
+		};
+
+		objectPrototype.setProgress = function(progressValue) {
+			if (progressValue >= 0 && progressValue <= 100) {
+				this.progressBar.style.width = progressValue + "%";
+				this.progressAmount.textContent = progressValue + "%";
+			}
+		};
+
+		document.registerElement("cp-progress-slat", {
+			prototype: objectPrototype
+		});
+	})();
+
+</script>
